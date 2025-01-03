@@ -264,7 +264,7 @@
             mdFiles.forEach((file, index) => {
                 const listItem = document.createElement("li");
                 const link = document.createElement("a");
-                link.textContent = file.name;
+                link.textContent = formatFileName(file.name);
                 link.href = "#";
                 link.onclick = () => {
                     loadFileContent(file, link);
@@ -305,6 +305,12 @@
             return content.replace(/```([\s\S]*?)```/g, (match, code) => {
                 return `<pre><code>${code.trim()}</code></pre>`;
             });
+        }
+
+        function formatFileName(fileName) {
+            return fileName
+                .replace(/_/g, ' ') // Replace underscores with spaces
+                .replace(/\.md$/, ''); // Remove the .md extension
         }
 
         function addCopyButtons() {
