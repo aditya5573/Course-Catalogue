@@ -246,7 +246,7 @@
         </div>
         <div class="main-content" id="fileContent"></div>
     </div>
-    <button class="previous-button" id="previousButton" style="display: none;" onclick="loadPreviousFile()">Previous</button>
+    <button class="previous-button" id="previousButton" onclick="loadPreviousFile()">Previous</button>
     <button class="next-button" id="nextButton" onclick="loadNextFile()">Next</button>
 
     <script>
@@ -364,11 +364,11 @@
             document.getElementById("readmeContent").style.display = "none";
             document.getElementById("courseContainer").style.display = "block";
             document.getElementById("nextButton").style.display = "none";
-            //document.getElementById("previousButton").style.display = "block";
+            document.getElementById("previousButton").style.display = "none";
         }
 
         function loadPreviousFile() {
-            if (currentFileIndex === 0) {
+            if (currentFileIndex > mdFiles.length - 1) {
                 currentFileIndex--;
                 const previousFile = mdFiles[currentFileIndex];
                 const sidebarLinks = document.querySelectorAll(".file-list a");
