@@ -92,6 +92,10 @@
             padding: 10px;
             overflow-y: auto;
             border-right: 1px solid #ccc;
+            resize: horizontal; /* Allows horizontal resizing */
+            overflow: auto; /* Ensures content doesn't overflow */
+            min-width: 200px; /* Sets a minimum width */
+            max-width: 50%; /* Sets a maximum width */
         }
 
         .file-list {
@@ -171,6 +175,24 @@
             fill: #000000;
         }
 
+        .previous-button {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: #0073e6;
+            color: white;
+            padding: 10px 15px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            z-index: 1000;
+        }
+        
+        .previous-button:hover {
+            background-color: #005bb5;
+        }
+
+
         .next-button {
             position: fixed;
             bottom: 20px;
@@ -224,7 +246,7 @@
         </div>
         <div class="main-content" id="fileContent"></div>
     </div>
-
+    <button class="previous-button" id="previousButton" onclick="loadPreviousFile()">Previous</button>
     <button class="next-button" id="nextButton" onclick="loadNextFile()">Next</button>
 
     <script>
@@ -342,6 +364,18 @@
             document.getElementById("readmeContent").style.display = "none";
             document.getElementById("courseContainer").style.display = "block";
             document.getElementById("nextButton").style.display = "none";
+        }
+
+        function loadPreviousFile() {
+            if (currentFileIndex > 0) {
+                currentFileIndex--;
+                const previousFile = mdFiles[currentFileIndex];
+                const sidebarLinks = document.querySelectorAll(".file-list a");
+                sidebarLinks.forEach(link => link.classList.remove("active"));
+                const previousLink = sidebarLinks[currentFileIndex];
+                previousLink.classList.add("active");
+                loadFileContent(previousFile, previousLink);
+            }
         }
 
         function loadNextFile() {
