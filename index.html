@@ -542,28 +542,28 @@
         }
 
         .markdown-content {
-            border: 1px solid #ccc;
-            padding: 20px 100px;
+            border: 0px solid #ccc;
+            padding: 20px 115px;
             border-radius: 0px;
         }
 
         h1 {
             font-size: 28px;
             font-weight: bold;
-            color: #333;
+            color: #000000;
         }
 
         h2 {
             font-size: 24px;
             font-weight: bold;
             margin-top: 20px;
-            color: #444;
+            color: #000000;
         }
 
         p {
             font-size: 16px;
             line-height: 1.6;
-            color: #555;
+            color: #000000;
         }
 
         ul {
@@ -742,19 +742,19 @@
                 .replace(/\.md$/, ''); // Remove the .md extension
         }
 
-        function addCopyButtons() {
-            const preElements = document.querySelectorAll("pre");
-            preElements.forEach(pre => {
-                const button = document.createElement("button");
-                button.className = "copy-icon";
-                button.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path d="M8 2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 2v16h12V4H8zm-4 4h2v12h10v2H6a2 2 0 0 1-2-2V8z"/>
-                    </svg>`;
-                button.onclick = () => copyToClipboard(pre.innerText.trim(), button);
-                pre.appendChild(button);
-            });
-        }
+        // function addCopyButtons() {
+        //     const preElements = document.querySelectorAll("pre");
+        //     preElements.forEach(pre => {
+        //         const button = document.createElement("button");
+        //         button.className = "copy-icon";
+        //         button.innerHTML = `
+        //             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        //                 <path d="M8 2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 2v16h12V4H8zm-4 4h2v12h10v2H6a2 2 0 0 1-2-2V8z"/>
+        //             </svg>`;
+        //         button.onclick = () => copyToClipboard(pre.innerText.trim(), button);
+        //         pre.appendChild(button);
+        //     });
+        // }
 
         // function copyToClipboard(text, button) {
         //     navigator.clipboard.writeText(text).then(() => {
