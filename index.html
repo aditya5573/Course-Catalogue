@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Portal</title>
-    <style>
+<!--     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -204,7 +204,219 @@
             width: 250px;
             font-size: 16px;
         }
-    </style>
+    </style> -->
+
+    /* General Body Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        
+        /* Header Styling */
+        .title-strip {
+            background-color: #ab031d;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            font-size: 40px;
+            font-weight: bold;
+        }
+        
+        /* Container Layout */
+        .content-wrapper {
+            display: flex;
+            height: 100vh;
+        }
+        
+        /* Sidebar Styling */
+        .sidebar {
+            width: 250px;
+            background-color: #f4f4f4;
+            padding: 10px;
+            overflow-y: auto;
+            border-right: 1px solid #ccc;
+            resize: horizontal;
+            min-width: 200px;
+            max-width: 50%;
+        }
+        
+        /* Sidebar Navigation */
+        .file-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .file-list li {
+            margin: 5px 0;
+        }
+        
+        .file-list a {
+            text-decoration: none;
+            color: #000000;
+            padding: 8px 12px;
+            display: block;
+            border-radius: 5px;
+        }
+        
+        .file-list a.active {
+            background-color: #e0e0e0;
+            font-weight: bold;
+        }
+        
+        .file-list a:hover {
+            background-color: #dcdcdc;
+            text-decoration: none;
+        }
+        
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #ffffff;
+        }
+        
+        /* Markdown Content Styling */
+        .markdown-content {
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        
+        /* Section Heading Styling */
+        .course-header {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        /* Subheadings */
+        .markdown-content h2 {
+            font-size: 22px;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #444;
+        }
+        
+        /* Paragraphs */
+        .markdown-content p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 15px;
+        }
+        
+        /* Bullet Points */
+        .markdown-content ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .markdown-content ul li {
+            margin-bottom: 5px;
+        }
+        
+        /* Code Block Styling */
+        pre {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 12px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+        }
+        
+        pre code {
+            display: block;
+            color: #333;
+        }
+        
+        /* Code Copy Button */
+        .copy-icon {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .copy-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: #ab031d;
+            transition: fill 0.3s ease, transform 0.3s ease;
+        }
+        
+        .copy-icon.copied svg {
+            fill: #000000;
+            transform: scale(1.1);
+        }
+        
+        .copy-icon:hover svg {
+            fill: #000000;
+        }
+        
+        /* Horizontal Section Dividers */
+        hr {
+            border: none;
+            height: 1px;
+            background-color: #ddd;
+            margin: 20px 0;
+        }
+        
+        /* Next Button Styling */
+        .next-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #808080;
+            color: white;
+            padding: 10px 15px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            z-index: 1000;
+        }
+        
+        .next-button:hover {
+            background-color: #000000;
+        }
+        
+        /* Search Bar Styling */
+        .search-bar {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 250px;
+            font-size: 16px;
+        }
+        
+        /* Section Divider */
+        .section-divider {
+            margin: 20px 0;
+            border-bottom: 1px solid #ccc;
+        }
+        
+        /* Dynamic Highlight for Active Content */
+        .dynamic-content-highlight {
+            background-color: #f0f0f0;
+            border-left: 4px solid #ab031d;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/default.min.css">
