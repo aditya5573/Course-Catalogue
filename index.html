@@ -600,6 +600,24 @@
         .next-button:hover {
             background-color: #900c3f;
         }
+
+        .copy-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ab031d;
+            color: white;
+            padding: 5px 10px;
+            font-size: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .copy-icon:hover {
+            background-color: #000000;
+        }
+        
        .search-bar {
             position: absolute;
             top: 20px;
@@ -738,14 +756,56 @@
             });
         }
 
-        function copyToClipboard(text, button) {
-            navigator.clipboard.writeText(text).then(() => {
-                button.classList.add("copied");
-                setTimeout(() => {
-                    button.classList.remove("copied");
-                }, 3000);
-            });
-        }
+        // function copyToClipboard(text, button) {
+        //     navigator.clipboard.writeText(text).then(() => {
+        //         button.classList.add("copied");
+        //         setTimeout(() => {
+        //             button.classList.remove("copied");
+        //         }, 3000);
+        //     });
+        // }
+
+        function addCopyButtons() {
+        const preElements = document.querySelectorAll("pre");
+
+        preElements.forEach((pre) => {
+            // Create a button element
+            const button = document.createElement("button");
+            button.className = "copy-icon";
+            button.innerHTML = "Copy Code";
+
+            // Add click event to copy the code
+            button.onclick = () => {
+                const codeContent = pre.querySelector("code").innerText.trim();
+                navigator.clipboard.writeText(codeContent).then(() => {
+                    button.innerText = "Copied!";
+                    setTimeout(() => {
+                        button.innerText = "Copy Code";
+                    }, 3000);
+                });
+            };
+
+            // Add the button to the code block
+            pre.style.position = "relative"; // Ensure the position for button placement
+            button.style.position = "absolute";
+            button.style.top = "10px";
+            button.style.right = "10px";
+            button.style.padding = "5px 10px";
+            button.style.fontSize = "12px";
+            button.style.backgroundColor = "#ab031d";
+            button.style.color = "white";
+            button.style.border = "none";
+            button.style.borderRadius = "5px";
+            button.style.cursor = "pointer";
+
+            pre.appendChild(button);
+        });
+    }
+
+    // Call the function after content is loaded
+    document.addEventListener("DOMContentLoaded", () => {
+        addCopyButtons();
+    });
 
         function goBack() {
             document.getElementById("backButton").style.display = "none";
