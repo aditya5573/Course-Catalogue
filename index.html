@@ -450,7 +450,7 @@
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
             width: 150px;
             cursor: pointer;
-            border-radius: 15px; /* Add this property for rounded corners */
+            border-radius: 15px;
         }
 
         .folder img {
@@ -487,20 +487,15 @@
         .content-wrapper {
             display: flex;
             height: 100vh;
-            background-color: #e0e0e0;
+            background-color: #f9f9f9;
         }
 
         .sidebar {
             width: 250px;
             background-color: #f4f4f4;
-            padding: 10px;
+            padding: 15px;
+            border-right: 1px solid #ccc;
             overflow-y: auto;
-            border-right: 0px solid #ccc;
-            border-right: 0px solid #ccc;
-            resize: horizontal; /* Allows horizontal resizing */
-            overflow: auto; /* Ensures content doesn't overflow */
-            min-width: 200px; /* Sets a minimum width */
-            max-width: 50%; /* Sets a maximum width */
         }
 
         .file-list {
@@ -521,27 +516,27 @@
         }
 
         .file-list a.active {
-            background-color: #e0e0e0;
-            font-weight: bold; //
+            background-color: #dfe6f0;
+            font-weight: bold;
         }
 
         .file-list a:hover {
-            text-decoration: underline;
-            text-decoration: none; //
+            background-color: #e0e0e0;
+            text-decoration: none;
         }
 
         .main-content {
             flex: 1;
             padding: 20px;
             overflow-y: auto;
+            background-color: white;
+            border-left: 1px solid #ccc;
         }
 
         .markdown-content {
-            background-color: white;
-            border: 0px solid #ccc;
-            padding: 80px;
-            border-radius: 0px;
-            position: relative;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
         }
 
         h1 {
@@ -574,62 +569,29 @@
         }
 
         pre {
-            position: relative;
-            padding: 10px;
-            background: #f4f4f4;
-            border-radius: 5px;
+            padding: 15px;
+            background: #f7f7f7;
             border: 1px solid #ddd;
+            border-radius: 5px;
             font-family: monospace;
-        }
-
-        pre code {
-            display: block;
             overflow-x: auto;
-        }
-
-        .copy-icon {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .copy-icon svg {
-            width: 20px;
-            height: 20px;
-            fill: #ab031d;
-            transition: fill 0.3s ease, transform 0.3s ease;
-        }
-
-        .copy-icon.copied svg {
-            fill: #000000; /* Fully black color */
-            transform: scale(1.1); /* Slight scale for effect */
-        }
-
-        .copy-icon:hover svg {
-            fill: #000000;
         }
 
         .next-button {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background-color: #808080;
+            background-color: #ab031d;
             color: white;
-            padding: 10px 15px;
+            padding: 10px 20px;
             font-weight: bold;
-            cursor: pointer;
             border-radius: 5px;
-            display: none;
-            z-index: 1000;
+            cursor: pointer;
         }
 
         .next-button:hover {
-            background-color: #000000;
+            background-color: #900c3f;
         }
-
         .search-bar {
             position: absolute;
             top: 20px;
@@ -640,7 +602,7 @@
             width: 250px;
             font-size: 16px;
         }
-    </style>    
+    </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/default.min.css">
@@ -652,7 +614,6 @@
 
     <div id="courseContainer" class="container">
         <div class="course-header">Course Catalogue</div>
-        <input type="text" class="search-bar" id="searchBar" placeholder="Search for a folder" oninput="searchFolder()" />
         <div class="folder-container"></div>
     </div>
 
