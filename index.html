@@ -498,6 +498,12 @@
             padding: 15px;
             border-right: 0px solid #ccc;
             overflow-y: auto;
+            border-right: 0px solid #ccc;
+            border-right: 0px solid #ccc;
+            resize: horizontal; /* Allows horizontal resizing */
+            overflow: auto; /* Ensures content doesn't overflow */
+            min-width: 200px; /* Sets a minimum width */
+            max-width: 50%; /* Sets a maximum width */
         }
 
         .file-list {
@@ -514,7 +520,7 @@
             color: #000000;
             padding: 5px 10px;
             display: block;
-            border-radius: 3px;
+            border-radius: 0px;
         }
 
         .file-list a.active {
@@ -532,13 +538,13 @@
             padding: 20px;
             overflow-y: auto;
             background-color: white;
-            border-left: 1px solid #ccc;
+            border-left: 0px solid #ccc;
         }
 
         .markdown-content {
             border: 1px solid #ccc;
-            padding: 20px;
-            border-radius: 5px;
+            padding: 80px 20px;
+            border-radius: 0px;
         }
 
         h1 {
