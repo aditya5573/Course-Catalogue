@@ -767,6 +767,7 @@
 
 
             document.getElementById("backButton").style.display = "block";
+            //document.getElementById("nextButton").style.display = "none";
             document.getElementById("nextButton").style.display = mdFiles.length > 1 ? "block" : "none";
             document.getElementById("folderName").style.display = "block";
             document.getElementById("folderName").textContent = folderName;
@@ -930,7 +931,13 @@
                 sidebarLinks.forEach(link => link.classList.remove("active"));
                 const nextLink = sidebarLinks[currentFileIndex];
                 nextLink.classList.add("active");
-                loadFileContent(nextFile, nextLink);
+                //loadFileContent(nextFile, nextLink);
+                
+                if (nextFile.name.endsWith(".md")) {
+                    loadFileContent(nextFile, nextLink);
+                } else if (nextFile.name.endsWith(".ipynb")) {
+                    loadNotebookContent(nextFile, nextLink);
+                }
             }
         }
 
