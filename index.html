@@ -606,7 +606,7 @@
         .prev-button {
             position: fixed;
             bottom: 20px;
-            left: 240px;
+            left: 270px;
             background-color: #ab031d;
             color: white;
             padding: 10px 20px;
@@ -786,7 +786,7 @@
             document.getElementById("backButton").style.display = "block";
             //document.getElementById("nextButton").style.display = "none";
             document.getElementById("nextButton").style.display = mdFiles.length > 1 ? "block" : "none";
-            document.getElementById("previousButton").style.display = mdFiles.length > 1 ? "block" : "none";
+            document.getElementById("previousButton").style.display = mdFiles.length > 0 ? "block" : "none";
             document.getElementById("folderName").style.display = "block";
             document.getElementById("folderName").textContent = folderName;
             document.getElementById("readmeContent").style.display = "flex";
@@ -939,6 +939,7 @@
             document.getElementById("readmeContent").style.display = "none";
             document.getElementById("courseContainer").style.display = "block";
             document.getElementById("nextButton").style.display = "none";
+            document.getElementById("previousButton").style.display = "none";
         }
 
         function loadNextFile() {
