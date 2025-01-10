@@ -705,7 +705,7 @@
     </div>
 
     <button class="next-button" id="nextButton" onclick="loadNextFile()">Next</button>
-    <button class="prev-button" id="prevButton" onclick="loadPreviousFile()">Previous</button>
+    <button class="next-button" id="previousButton" onclick="loadPreviousFile()">Previous</button>
 
     <script>
         const repoOwner = "aditya5573";
@@ -749,8 +749,25 @@
                     code.className = "language-python"; // Use appropriate language
                     code.textContent = cell.source.join(''); // Combine code lines
                     pre.appendChild(code);
-                    contentArea.appendChild(pre);
+
+                    // Add a "Copy Code" button
+                    const copyButton = document.createElement("button");
+                    copyButton.className = "copy-icon";
+                    copyButton.textContent = "Copy Code";
         
+                    // Add functionality to the "Copy Code" button
+                    copyButton.onclick = () => {
+                        navigator.clipboard.writeText(cell.source.join('')).then(() => {
+                            copyButton.textContent = "Copied!";
+                            setTimeout(() => {
+                                copyButton.textContent = "Copy Code";
+                            }, 3000);
+                        });
+                    };
+        
+                    pre.appendChild(copyButton);
+                    contentArea.appendChild(pre);
+                    
                     // Highlight the code block
                     hljs.highlightElement(code);
                 }
@@ -769,6 +786,7 @@
             document.getElementById("backButton").style.display = "block";
             //document.getElementById("nextButton").style.display = "none";
             document.getElementById("nextButton").style.display = mdFiles.length > 1 ? "block" : "none";
+            document.getElementById("previousButton").style.display = mdFiles.length > 1 ? "block" : "none";
             document.getElementById("folderName").style.display = "block";
             document.getElementById("folderName").textContent = folderName;
             document.getElementById("readmeContent").style.display = "flex";
