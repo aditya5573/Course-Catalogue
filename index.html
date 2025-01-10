@@ -778,15 +778,15 @@
                     copyButton.className = "copy-icon";
                     copyButton.textContent = "Copy Code";
         
-                    // // Add functionality to the "Copy Code" button
-                    // copyButton.onclick = () => {
-                    //     navigator.clipboard.writeText(cell.source.join('')).then(() => {
-                    //         copyButton.textContent = "Copied!";
-                    //         setTimeout(() => {
-                    //             copyButton.textContent = "Copy Code";
-                    //         }, 3000);
-                    //     });
-                    // };
+                    // Add functionality to the "Copy Code" button
+                    copyButton.onclick = () => {
+                        navigator.clipboard.writeText(cell.source.join('')).then(() => {
+                            copyButton.textContent = "Copied!";
+                            setTimeout(() => {
+                                copyButton.textContent = "Copy Code";
+                            }, 3000);
+                        });
+                    };
         
                     // Append the code block and button to the container
                     codeContainer.appendChild(pre);
