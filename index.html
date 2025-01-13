@@ -623,7 +623,9 @@
                     <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png" alt="folder icon">
                     <h3>${folder.name}</h3>
                 `;
-                folderDiv.onclick = () => loadFolderContents(folder.name);
+                folderDiv.onclick = () => {
+                    loadFolderContents(folder.name);
+                };
                 container.appendChild(folderDiv);
             });
         }
