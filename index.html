@@ -626,11 +626,7 @@
                 folderDiv.onclick = () => loadFolderContents(folder.name);
                 container.appendChild(folderDiv);
             });
-        }catch (error) {
-        console.error("Error displaying folders:", error);
-        container.innerHTML = "Failed to load folders.";
-    }
-}
+        }
             
         displayFolders();
     </script>
