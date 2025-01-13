@@ -22,14 +22,14 @@
         }
 
         .container {
-            padding: 20px;
+            padding: 10px;
         }
 
         .course-header {
             font-size: 24px;
             font-weight: bold;
             margin-bottom: 20px;
-            color: #333;
+            color: #000000;
         }
 
         .folder-container {
@@ -40,7 +40,7 @@
 
         .folder {
             background-color: white;
-            border: 1px solid #ddd;
+            border: 0px solid #ddd;
             padding: 15px;
             text-align: center;
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
@@ -55,7 +55,7 @@
         }
 
         .back {
-            position: absolute;
+            position: fixed;
             top: 20px;
             left: 20px;
             background-color: #808080;
@@ -80,6 +80,16 @@
             color: #333;
         }
 
+        .notebook-content {
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            line-height: 1.5;
+            overflow-x: auto;
+        }
+
         .content-wrapper {
             display: flex;
             height: 100vh;
@@ -88,10 +98,16 @@
 
         .sidebar {
             width: 250px;
-            background-color: #f4f4f4;
+            background-color: #ffffff;
             padding: 15px;
-            border-right: 1px solid #ccc;
+            border-right: 0px solid #ccc;
             overflow-y: auto;
+            border-right: 0px solid #ccc;
+            border-right: 0px solid #ccc;
+            resize: horizontal; /* Allows horizontal resizing */
+            overflow: auto; /* Ensures content doesn't overflow */
+            min-width: 200px; /* Sets a minimum width */
+            max-width: 50%; /* Sets a maximum width */
         }
 
         .file-list {
@@ -108,7 +124,7 @@
             color: #000000;
             padding: 5px 10px;
             display: block;
-            border-radius: 3px;
+            border-radius: 0px;
         }
 
         .file-list a.active {
@@ -126,32 +142,32 @@
             padding: 20px;
             overflow-y: auto;
             background-color: white;
-            border-left: 1px solid #ccc;
+            border-left: 0px solid #ccc;
         }
 
         .markdown-content {
-            border: 1px solid #ccc;
-            padding: 20px;
-            border-radius: 5px;
+            border: 0px solid #ccc;
+            padding: 20px 115px;
+            border-radius: 0px;
         }
 
         h1 {
             font-size: 28px;
             font-weight: bold;
-            color: #333;
+            color: #000000;
         }
 
         h2 {
             font-size: 24px;
             font-weight: bold;
             margin-top: 20px;
-            color: #444;
+            color: #000000;
         }
 
         p {
             font-size: 16px;
             line-height: 1.6;
-            color: #555;
+            color: #000000;
         }
 
         ul {
@@ -163,16 +179,7 @@
             font-size: 16px;
             margin-bottom: 5px;
         }
-
-        pre {
-            padding: 15px;
-            background: #f7f7f7;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-family: monospace;
-            overflow-x: auto;
-        }
-
+        
         .next-button {
             position: fixed;
             bottom: 20px;
@@ -183,11 +190,106 @@
             font-weight: bold;
             border-radius: 5px;
             cursor: pointer;
+            display: none; /* Initially hidden */
         }
 
         .next-button:hover {
             background-color: #900c3f;
         }
+
+        .prev-button {
+            position: fixed;
+            bottom: 20px;
+            left: 300px;
+            background-color: #ab031d;
+            color: white;
+            padding: 10px 20px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none; /* Initially hidden */
+        }
+        
+        .prev-button:hover {
+            background-color: #900c3f;
+        }
+
+        pre {
+            position: relative;
+            padding: 5px;
+            background: #f7f7f7;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: monospace;
+            overflow-x: auto;
+        }
+        
+        /* Specific styling for code blocks in .ipynb files */
+        .code-container pre {
+            left-margin: 100px;
+            width: 50%;
+            overflow-x: auto;  /*Enable horizontal scrolling if needed */
+            background-color: #f9f9f9; /* Optional: light background for contrast */
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            color: #333;
+        }
+        
+        .code-container code {
+            font-family: "Courier New", Courier, monospace;
+            font-size: 14px;
+        }
+        
+        .copy-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ab031d;
+            color: white;
+            padding: 5px 10px;
+            font-size: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            opacity: 1;
+            transition: opacity 0.2s ease;
+            margin-left: auto; /* Push the button to the far right */
+            display: inline-block; /* Ensure it doesn't take unnecessary space */
+        }
+        
+        .copy-icon:hover {
+            background-color: #000000;
+            opacity: 1;
+        }
+        
+       .search-bar {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 250px;
+            font-size: 16px;
+        }
+
+        /* Mobile Responsiveness: */
+        @media (max-width: 768px) {
+            .next-button, .prev-button {
+                bottom: 10px;
+                width: calc(50% - 20px); /* Each button takes half width */
+            }
+        
+            .next-button {
+                right: 10px;
+            }
+        
+            .prev-button {
+                left: 10px;
+            }
+        }
+        
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
@@ -200,6 +302,7 @@
 
     <div id="courseContainer" class="container">
         <div class="course-header">Course Catalogue</div>
+        <input type="text" class="search-bar" id="searchBar" placeholder="Search for a folder" oninput="searchFolder()" />
         <div class="folder-container"></div>
     </div>
 
@@ -214,9 +317,10 @@
     </div>
 
     <button class="next-button" id="nextButton" onclick="loadNextFile()">Next</button>
+    <button class="prev-button" id="previousButton" onclick="loadPreviousFile()">Previous</button>
 
     <script>
-          const repoOwner = "aditya5573";
+        const repoOwner = "aditya5573";
         const repoName = "Course-Catalogue";
         const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents`;
 
@@ -231,13 +335,77 @@
             return data.filter(item => item.type === "dir");
         }
 
+        async function loadNotebookContent(file, link) {
+            const response = await fetch(file.download_url);
+            const notebook = await response.json(); // Parse the .ipynb JSON file
+        
+            // Remove "active" class from all links and add to the current link
+            document.querySelectorAll(".file-list a").forEach(a => a.classList.remove("active"));
+            link.classList.add("active");
+        
+            const contentArea = document.getElementById("fileContent");
+            contentArea.innerHTML = ""; // Clear content area
+        
+            // Loop through notebook cells
+            notebook.cells.forEach(cell => {
+                if (cell.cell_type === "markdown") {
+                    // Convert Markdown to HTML
+                    const htmlContent = markdownConverter.makeHtml(cell.source.join(''));
+                    const div = document.createElement("div");
+                    div.className = "markdown-content";
+                    div.innerHTML = htmlContent;
+                    contentArea.appendChild(div);
+                } else if (cell.cell_type === "code") {
+                    // Create a container for the code block and button
+                    const codeContainer = document.createElement("div");
+                    codeContainer.className = "code-container";
+        
+                    // Render code block with syntax highlighting
+                    const pre = document.createElement("pre");
+                    const code = document.createElement("code");
+                    code.className = "language-python"; // Use appropriate language
+                    code.textContent = cell.source.join(''); // Combine code lines
+                    pre.appendChild(code);
+        
+                    Add a "Copy Code" button
+                    const copyButton = document.createElement("button");
+                    copyButton.className = "copy-icon";
+                    copyButton.textContent = "Copy Code";
+        
+                    // Add functionality to the "Copy Code" button
+                    copyButton.onclick = () => {
+                        navigator.clipboard.writeText(cell.source.join('')).then(() => {
+                            copyButton.textContent = "Copied!";
+                            setTimeout(() => {
+                                copyButton.textContent = "Copy Code";
+                            }, 3000);
+                        });
+                    };
+        
+                    // Append the code block and button to the container
+                    codeContainer.appendChild(pre);
+                    codeContainer.appendChild(copyButton);
+                    contentArea.appendChild(codeContainer);
+        
+                    // Highlight the code block
+                    hljs.highlightElement(code);
+                }
+            });
+        
+            currentFileIndex = mdFiles.indexOf(file);
+        }
+
         async function loadFolderContents(folderName) {
             const folderUrl = `${apiUrl}/${folderName}`;
             const response = await fetch(folderUrl);
             const files = await response.json();
-            mdFiles = files.filter(file => file.name.endsWith(".md"));
+            mdFiles = files.filter(file => file.name.endsWith(".md") || file.name.endsWith(".ipynb"));
+
 
             document.getElementById("backButton").style.display = "block";
+            //document.getElementById("nextButton").style.display = "none";
+            document.getElementById("nextButton").style.display = mdFiles.length > 1 ? "block" : "none";
+            document.getElementById("previousButton").style.display = mdFiles.length > 0 ? "block" : "none";
             document.getElementById("folderName").style.display = "block";
             document.getElementById("folderName").textContent = folderName;
             document.getElementById("readmeContent").style.display = "flex";
@@ -259,9 +427,26 @@
                     return false;
                 };
 
+                // Check file type and load content accordingly
+                if (file.name.endsWith(".md")) {
+                    link.onclick = () => {
+                        loadFileContent(file, link);
+                        return false;
+                    };
+                } else if (file.name.endsWith(".ipynb")) {
+                    link.onclick = () => {
+                        loadNotebookContent(file, link);
+                        return false;
+                    };
+                }
+
                 if (index === 0) {
                     link.classList.add("active");
-                    loadFileContent(file, link);
+                    if (file.name.endsWith(".md")) {
+                        loadFileContent(file, link);
+                    } else if (file.name.endsWith(".ipynb")) {
+                        loadNotebookContent(file, link);
+                    }
                 }
 
                 listItem.appendChild(link);
@@ -299,30 +484,73 @@
             return fileName
                 .replace(/_/g, ' ') // Replace underscores with spaces
                 .replace(/\.md$/, ''); // Remove the .md extension
+                
         }
+
+        // function addCopyButtons() {
+        //     const preElements = document.querySelectorAll("pre");
+        //     preElements.forEach(pre => {
+        //         const button = document.createElement("button");
+        //         button.className = "copy-icon";
+        //         button.innerHTML = `
+        //             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        //                 <path d="M8 2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 2v16h12V4H8zm-4 4h2v12h10v2H6a2 2 0 0 1-2-2V8z"/>
+        //             </svg>`;
+        //         button.onclick = () => copyToClipboard(pre.innerText.trim(), button);
+        //         pre.appendChild(button);
+        //     });
+        // }
+
+        // function copyToClipboard(text, button) {
+        //     navigator.clipboard.writeText(text).then(() => {
+        //         button.classList.add("copied");
+        //         setTimeout(() => {
+        //             button.classList.remove("copied");
+        //         }, 3000);
+        //     });
+        // }
 
         function addCopyButtons() {
-            const preElements = document.querySelectorAll("pre");
-            preElements.forEach(pre => {
-                const button = document.createElement("button");
-                button.className = "copy-icon";
-                button.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path d="M8 2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 2v16h12V4H8zm-4 4h2v12h10v2H6a2 2 0 0 1-2-2V8z"/>
-                    </svg>`;
-                button.onclick = () => copyToClipboard(pre.innerText.trim(), button);
-                pre.appendChild(button);
-            });
-        }
+        const preElements = document.querySelectorAll("pre");
 
-        function copyToClipboard(text, button) {
-            navigator.clipboard.writeText(text).then(() => {
-                button.classList.add("copied");
-                setTimeout(() => {
-                    button.classList.remove("copied");
-                }, 3000);
-            });
-        }
+        preElements.forEach((pre) => {
+            // Create a button element
+            const button = document.createElement("button");
+            button.className = "copy-icon";
+            button.innerHTML = "Copy Code";
+
+            // Add click event to copy the code
+            button.onclick = () => {
+                const codeContent = pre.querySelector("code").innerText.trim();
+                navigator.clipboard.writeText(codeContent).then(() => {
+                    button.innerText = "Copied!";
+                    setTimeout(() => {
+                        button.innerText = "Copy Code";
+                    }, 3000);
+                });
+            };
+
+            // Add the button to the code block
+            pre.style.position = "relative"; // Ensure the position for button placement
+            button.style.position = "absolute";
+            button.style.top = "10px";
+            button.style.right = "10px";
+            button.style.padding = "5px 10px";
+            button.style.fontSize = "12px";
+            button.style.backgroundColor = "#ab031d";
+            button.style.color = "white";
+            button.style.border = "none";
+            button.style.borderRadius = "5px";
+            button.style.cursor = "pointer";
+
+            pre.appendChild(button);
+        });
+    }
+
+    // Call the function after content is loaded
+    document.addEventListener("DOMContentLoaded", () => {
+        addCopyButtons();
+    });
 
         function goBack() {
             document.getElementById("backButton").style.display = "none";
@@ -330,6 +558,7 @@
             document.getElementById("readmeContent").style.display = "none";
             document.getElementById("courseContainer").style.display = "block";
             document.getElementById("nextButton").style.display = "none";
+            document.getElementById("previousButton").style.display = "none";
         }
 
         function loadNextFile() {
@@ -340,7 +569,30 @@
                 sidebarLinks.forEach(link => link.classList.remove("active"));
                 const nextLink = sidebarLinks[currentFileIndex];
                 nextLink.classList.add("active");
-                loadFileContent(nextFile, nextLink);
+                //loadFileContent(nextFile, nextLink);
+                
+                if (nextFile.name.endsWith(".md")) {
+                    loadFileContent(nextFile, nextLink);
+                } else if (nextFile.name.endsWith(".ipynb")) {
+                    loadNotebookContent(nextFile, nextLink);
+                }
+            }
+        }
+
+        function loadPreviousFile() {
+            if (currentFileIndex > 0) {
+                currentFileIndex--;
+                const prevFile = mdFiles[currentFileIndex];
+                const sidebarLinks = document.querySelectorAll(".file-list a");
+                sidebarLinks.forEach(link => link.classList.remove("active"));
+                const prevLink = sidebarLinks[currentFileIndex];
+                prevLink.classList.add("active");
+        
+                if (prevFile.name.endsWith(".md")) {
+                    loadFileContent(prevFile, prevLink);
+                } else if (prevFile.name.endsWith(".ipynb")) {
+                    loadNotebookContent(prevFile, prevLink);
+                }
             }
         }
 
@@ -349,11 +601,12 @@
             const folders = document.querySelectorAll(".folder");
             folders.forEach(folder => {
                 const folderName = folder.querySelector("h3").textContent.toLowerCase();
-                if (folderName.includes(searchQuery)) {
-                    folder.style.display = "block";
-                } else {
-                    folder.style.display = "none";
-                }
+                // if (folderName.includes(searchQuery)) {
+                //     folder.style.display = "block";
+                // } else {
+                //     folder.style.display = "none";
+                // }
+                folder.style.display = folderName.includes(searchQuery) ? "block" : "none";
             });
         }
 
