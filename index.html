@@ -214,7 +214,7 @@
             background-color: #900c3f;
         }
 
-        pre {
+/*         pre {
             position: relative;
             padding: 5px;
             background: #f7f7f7;
@@ -222,28 +222,25 @@
             border-radius: 5px;
             font-family: monospace;
             overflow-x: auto;
-        }
-        
-        /* Styling for .ipynb code blocks */
-        .code-container.notebook-code pre {
-            margin: 0;
-            width: 100%;
-            overflow-x: auto; /* Enable horizontal scrolling if needed */
-            font-family: "Courier New", Courier, monospace;
-            font-size: 14px;
-            color: #333;
-            background-color: #f9f9f9; /* Light background for contrast */
+        } */
+
+        /* Specific styling for code blocks in .ipynb files */
+        .code-container pre {
+            position: relative;
+            left-margin: 50px;
+            width: 50%;
+            right-margin: 100px;
+            overflow: auto;  /*Enable horizontal scrolling if needed */
+            background-color: #f9f9f9; /* Optional: light background for contrast */
             border: 1px solid #ddd;
             border-radius: 5px;
             padding: 10px;
+            color: #333;
         }
         
-        /* General styling for code containers */
-        .code-container {
-            display: flex;
-            flex-direction: column; /* Stack code and button vertically */
-            align-items: flex-start;
-            margin-bottom: 20px;
+        .code-container code {
+            font-family: "Courier New", Courier, monospace;
+            font-size: 14px;
         }
                 
         .copy-icon {
@@ -261,6 +258,7 @@
             transition: opacity 0.2s ease;
             margin-left: auto; /* Push the button to the far right */
             display: inline-block; /* Ensure it doesn't take unnecessary space */
+            z-index: 1;
         }
         
         .copy-icon:hover {
@@ -340,66 +338,6 @@
             return data.filter(item => item.type === "dir");
         }
 
-        // async function loadNotebookContent(file, link) {
-        //     const response = await fetch(file.download_url);
-        //     const notebook = await response.json(); // Parse the .ipynb JSON file
-        
-        //     // Remove "active" class from all links and add to the current link
-        //     document.querySelectorAll(".file-list a").forEach(a => a.classList.remove("active"));
-        //     link.classList.add("active");
-        
-        //     const contentArea = document.getElementById("fileContent");
-        //     contentArea.innerHTML = ""; // Clear content area
-        
-        //     // Loop through notebook cells
-        //     notebook.cells.forEach(cell => {
-        //         if (cell.cell_type === "markdown") {
-        //             // Convert Markdown to HTML
-        //             const htmlContent = markdownConverter.makeHtml(cell.source.join(''));
-        //             const div = document.createElement("div");
-        //             div.className = "markdown-content";
-        //             div.innerHTML = htmlContent;
-        //             contentArea.appendChild(div);
-        //         } else if (cell.cell_type === "code") {
-        //             // Create a container for the code block and button
-        //             const codeContainer = document.createElement("div");
-        //             codeContainer.className = "code-container";
-        
-        //             // Render code block with syntax highlighting
-        //             const pre = document.createElement("pre");
-        //             const code = document.createElement("code");
-        //             code.className = "language-python"; // Use appropriate language
-        //             code.textContent = cell.source.join(''); // Combine code lines
-        //             pre.appendChild(code);
-        
-        //             // Add a "Copy Code" button
-        //             const copyButton = document.createElement("button");
-        //             copyButton.className = "copy-icon";
-        //             copyButton.textContent = "Copy Code";
-        
-        //             // Add functionality to the "Copy Code" button
-        //             copyButton.onclick = () => {
-        //                 navigator.clipboard.writeText(cell.source.join('')).then(() => {
-        //                     copyButton.textContent = "Copied!";
-        //                     setTimeout(() => {
-        //                         copyButton.textContent = "Copy Code";
-        //                     }, 3000);
-        //                 });
-        //             };
-        
-        //             // Append the code block and button to the container
-        //             codeContainer.appendChild(pre);
-        //             codeContainer.appendChild(copyButton);
-        //             contentArea.appendChild(codeContainer);
-        
-        //             // Highlight the code block
-        //             hljs.highlightElement(code);
-        //         }
-        //     });
-        
-        //     currentFileIndex = mdFiles.indexOf(file);
-        // }
-
         async function loadNotebookContent(file, link) {
             const response = await fetch(file.download_url);
             const notebook = await response.json(); // Parse the .ipynb JSON file
@@ -423,7 +361,7 @@
                 } else if (cell.cell_type === "code") {
                     // Create a container for the code block and button
                     const codeContainer = document.createElement("div");
-                    codeContainer.className = "code-container notebook-code"; // Specific class for .ipynb files
+                    codeContainer.className = "code-container";
         
                     // Render code block with syntax highlighting
                     const pre = document.createElement("pre");
@@ -432,7 +370,7 @@
                     code.textContent = cell.source.join(''); // Combine code lines
                     pre.appendChild(code);
         
-                    // Add a "Copy Code" button inside the container
+                    // Add a "Copy Code" button
                     const copyButton = document.createElement("button");
                     copyButton.className = "copy-icon";
                     copyButton.textContent = "Copy Code";
@@ -459,7 +397,6 @@
         
             currentFileIndex = mdFiles.indexOf(file);
         }
-
 
         // async function loadNotebookContent(file, link) {
         //     const response = await fetch(file.download_url);
