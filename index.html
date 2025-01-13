@@ -22,14 +22,14 @@
         }
 
         .container {
-            padding: 10px;
+            padding: 20px;
         }
 
         .course-header {
             font-size: 24px;
             font-weight: bold;
             margin-bottom: 20px;
-            color: #000000;
+            color: #333;
         }
 
         .folder-container {
@@ -40,7 +40,7 @@
 
         .folder {
             background-color: white;
-            border: 0px solid #ddd;
+            border: 1px solid #ddd;
             padding: 15px;
             text-align: center;
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
@@ -55,7 +55,7 @@
         }
 
         .back {
-            position: fixed;
+            position: absolute;
             top: 20px;
             left: 20px;
             background-color: #808080;
@@ -80,16 +80,6 @@
             color: #333;
         }
 
-        .notebook-content {
-            background-color: white;
-            border: 1px solid #ccc;
-            padding: 15px;
-            border-radius: 5px;
-            font-family: Arial, sans-serif;
-            line-height: 1.5;
-            overflow-x: auto;
-        }
-
         .content-wrapper {
             display: flex;
             height: 100vh;
@@ -98,16 +88,10 @@
 
         .sidebar {
             width: 250px;
-            background-color: #ffffff;
+            background-color: #f4f4f4;
             padding: 15px;
-            border-right: 0px solid #ccc;
+            border-right: 1px solid #ccc;
             overflow-y: auto;
-            border-right: 0px solid #ccc;
-            border-right: 0px solid #ccc;
-            resize: horizontal; /* Allows horizontal resizing */
-            overflow: auto; /* Ensures content doesn't overflow */
-            min-width: 200px; /* Sets a minimum width */
-            max-width: 50%; /* Sets a maximum width */
         }
 
         .file-list {
@@ -124,7 +108,7 @@
             color: #000000;
             padding: 5px 10px;
             display: block;
-            border-radius: 0px;
+            border-radius: 3px;
         }
 
         .file-list a.active {
@@ -142,32 +126,32 @@
             padding: 20px;
             overflow-y: auto;
             background-color: white;
-            border-left: 0px solid #ccc;
+            border-left: 1px solid #ccc;
         }
 
         .markdown-content {
-            border: 0px solid #ccc;
-            padding: 20px 115px;
-            border-radius: 0px;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
         }
 
         h1 {
             font-size: 28px;
             font-weight: bold;
-            color: #000000;
+            color: #333;
         }
 
         h2 {
             font-size: 24px;
             font-weight: bold;
             margin-top: 20px;
-            color: #000000;
+            color: #444;
         }
 
         p {
             font-size: 16px;
             line-height: 1.6;
-            color: #000000;
+            color: #555;
         }
 
         ul {
@@ -179,7 +163,16 @@
             font-size: 16px;
             margin-bottom: 5px;
         }
-        
+
+        pre {
+            padding: 15px;
+            background: #f7f7f7;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: monospace;
+            overflow-x: auto;
+        }
+
         .next-button {
             position: fixed;
             bottom: 20px;
@@ -195,47 +188,6 @@
         .next-button:hover {
             background-color: #900c3f;
         }
-
-        pre {
-            position: relative;
-            padding: 5px;
-            background: #f7f7f7;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-family: monospace;
-            overflow: auto;
-        }
-        
-        .copy-icon {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #ab031d;
-            color: white;
-            padding: 5px 10px;
-            font-size: 12px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            opacity: 0.8;
-            transition: opacity 0.2s ease;
-        }
-        
-        .copy-icon:hover {
-            background-color: #000000;
-            opacity: 1;
-        }
-        
-       .search-bar {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            width: 250px;
-            font-size: 16px;
-        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
@@ -248,7 +200,6 @@
 
     <div id="courseContainer" class="container">
         <div class="course-header">Course Catalogue</div>
-        <input type="text" class="search-bar" id="searchBar" placeholder="Search for a folder" oninput="searchFolder()" />
         <div class="folder-container"></div>
     </div>
 
@@ -279,6 +230,43 @@
             const data = await response.json();
             return data.filter(item => item.type === "dir");
         }
+
+        async function loadNotebookContent(file, link) {
+            const response = await fetch(file.download_url);
+            const notebook = await response.json(); // Parse the .ipynb JSON file
+        
+            document.querySelectorAll(".file-list a").forEach(a => a.classList.remove("active"));
+            link.classList.add("active");
+        
+            const contentArea = document.getElementById("fileContent");
+            contentArea.innerHTML = ""; // Clear content area
+        
+            // Loop through notebook cells
+            notebook.cells.forEach(cell => {
+                if (cell.cell_type === "markdown") {
+                    // Convert Markdown to HTML
+                    const htmlContent = markdownConverter.makeHtml(cell.source.join(''));
+                    const div = document.createElement("div");
+                    div.className = "markdown-content";
+                    div.innerHTML = htmlContent;
+                    contentArea.appendChild(div);
+                } else if (cell.cell_type === "code") {
+                    // Render code blocks with syntax highlighting
+                    const pre = document.createElement("pre");
+                    const code = document.createElement("code");
+                    code.className = "language-python"; // Use appropriate language
+                    code.textContent = cell.source.join(''); // Combine code lines
+                    pre.appendChild(code);
+                    contentArea.appendChild(pre);
+        
+                    // Highlight the code block
+                    hljs.highlightElement(code);
+                }
+            });
+        
+            currentFileIndex = mdFiles.indexOf(file);
+        }
+
         async function loadFolderContents(folderName) {
             const folderUrl = ${apiUrl}/${folderName};
             const response = await fetch(folderUrl);
@@ -370,7 +358,7 @@
                 .replace(/\.md$/, ''); // Remove the .md extension
                 
         }
-function addCopyButtons() {
+        function addCopyButtons() {
         const preElements = document.querySelectorAll("pre");
 
         preElements.forEach((pre) => {
@@ -462,11 +450,12 @@ function addCopyButtons() {
                 container.appendChild(folderDiv);
             });
         }
-
+        
         displayFolders();
     </script>
 </body>
 </html>
+
 
 
 
