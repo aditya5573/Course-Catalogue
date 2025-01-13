@@ -228,7 +228,8 @@
         .code-container pre {
             left-margin: 100px;
             width: 50%;
-            overflow-x: auto;  /*Enable horizontal scrolling if needed */
+            right-margin: 50px;
+            overflow: auto;  /*Enable horizontal scrolling if needed */
             background-color: #f9f9f9; /* Optional: light background for contrast */
             border: 1px solid #ddd;
             border-radius: 5px;
@@ -367,7 +368,7 @@
                     code.textContent = cell.source.join(''); // Combine code lines
                     pre.appendChild(code);
         
-                    Add a "Copy Code" button
+                    // Add a "Copy Code" button
                     const copyButton = document.createElement("button");
                     copyButton.className = "copy-icon";
                     copyButton.textContent = "Copy Code";
@@ -685,7 +686,6 @@
     </script>
 </body>
 </html>
-
 
 
 
