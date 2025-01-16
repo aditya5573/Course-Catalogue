@@ -343,11 +343,6 @@
                     copyButton.textContent = "Copy Code";
         
                     // Add functionality to the "Copy Code" button
-                    <div class="code-container">
-                        <button class="copy-button">Copy Code</button>
-                        <pre><code>{{ code_content }}</code></pre>
-                    </div>
-
                     copyButton.onclick = () => {
                         navigator.clipboard.writeText(cell.source.join('')).then(() => {
                             copyButton.textContent = "Copied!";
