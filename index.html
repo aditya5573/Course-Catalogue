@@ -208,6 +208,32 @@
 /*             overflow-x: auto; */
         }
 
+        .code-container {
+            position: relative; /* Ensures button placement is relative to the container */
+            margin: 16px 0; /* Add spacing between blocks */
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 12px;
+            background-color: #f8f8f8; /* Light gray background for the code container */
+        }
+
+        .copy-code-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: #f44336; /* Red button */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .copy-code-btn:hover {
+            background-color: #d32f2f; /* Darker red on hover */
+        }
+
         .copy-icon {
             position: absolute;
             top: 10px;
@@ -381,52 +407,43 @@
         
             // Loop through notebook cells
             notebook.cells.forEach(cell => {
-                if (cell.cell_type === "markdown") {
-                    // Convert Markdown to HTML
-                    const htmlContent = markdownConverter.makeHtml(cell.source.join(''));
-                    const div = document.createElement("div");
-                    div.className = "markdown-content";
-                    div.innerHTML = htmlContent;
-                    contentArea.appendChild(div);
-                } else if (cell.cell_type === "code") {
-                    // Create a container for the code block and button
-                    const codeContainer = document.createElement("div");
-                    codeContainer.className = "code-container";
+            if (cell.cell_type === "code") {
+                // Create a container for the code block and button
+                const codeContainer = document.createElement("div");
+                codeContainer.className = "code-container"; // Make sure this class exists in your CSS
         
-                    // Render code block with syntax highlighting
-                    const pre = document.createElement("pre");
-                    const code = document.createElement("code");
-                    code.className = "language-python"; // Use appropriate language
-                    code.textContent = cell.source.join(''); // Combine code lines
-                    pre.appendChild(code);
+                // Render code block with syntax highlighting
+                const pre = document.createElement("pre");
+                const code = document.createElement("code");
+                code.className = "language-python"; // Use appropriate language
+                code.textContent = cell.source.join(''); // Combine code lines
+                pre.appendChild(code);
         
-                    // Add a "Copy Code" button
-                    const copyButton = document.createElement("button");
-                    copyButton.className = "copy-icon";
-                    copyButton.textContent = "Copy Code";
+                // Add a "Copy Code" button
+                const copyButton = document.createElement("button");
+                copyButton.className = "copy-code-btn";
+                copyButton.textContent = "Copy Code";
         
-                    // Add functionality to the "Copy Code" button
-                    copyButton.onclick = () => {
-                        navigator.clipboard.writeText(cell.source.join('')).then(() => {
-                            copyButton.textContent = "Copied!";
-                            setTimeout(() => {
-                                copyButton.textContent = "Copy Code";
-                            }, 3000);
-                        });
-                    };
+                // Add functionality to the "Copy Code" button
+                copyButton.onclick = () => {
+                    navigator.clipboard.writeText(cell.source.join('')).then(() => {
+                        copyButton.textContent = "Copied!";
+                        setTimeout(() => {
+                            copyButton.textContent = "Copy Code";
+                        }, 3000);
+                    });
+                };
         
-                    // Append the code block and button to the container
-                    codeContainer.appendChild(pre);
-                    codeContainer.appendChild(copyButton);
-                    contentArea.appendChild(codeContainer);
+                // Append the code block and button to the container
+                codeContainer.appendChild(pre);
+                codeContainer.appendChild(copyButton); // Button added after the code block
+                contentArea.appendChild(codeContainer);
         
-                    // Highlight the code block
-                    hljs.highlightElement(code);
-                }
-            });
-        
-            currentFileIndex = mdFiles.indexOf(file);
-        }
+                // Highlight the code block
+                hljs.highlightElement(code);
+            }
+        });
+
 
         async function loadFolderContents(folderName) {
             const folderUrl = `${apiUrl}/${folderName}`;
