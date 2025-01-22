@@ -21,39 +21,42 @@
             font-weight: bold;
         }
 
-        .login-container {
+        /* Existing Course Portal styles remain unchanged */
+
+        /* Login/Signup Styles */
+        .auth-container {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f9f9f9;
+            background-color: #f4f4f4;
         }
 
-        .login-box {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
+        .auth-box {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
             width: 100%;
+            max-width: 400px;
             text-align: center;
         }
 
-        .login-box h2 {
+        .auth-box h2 {
             margin-bottom: 20px;
             color: #333;
         }
 
-        .login-box input {
-            width: calc(100% - 20px);
+        .auth-box input {
+            width: 100%;
             padding: 10px;
-            margin-bottom: 10px;
+            margin: 10px 0;
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 16px;
         }
 
-        .login-box button {
+        .auth-box button {
             width: 100%;
             padding: 10px;
             background-color: #ab031d;
@@ -64,100 +67,114 @@
             cursor: pointer;
         }
 
-        .login-box button:hover {
+        .auth-box button:hover {
             background-color: #900c3f;
         }
 
-        .toggle-link {
-            color: #ab031d;
+        .auth-box .toggle-link {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #007BFF;
             cursor: pointer;
-            text-decoration: none;
         }
 
-        .toggle-link:hover {
+        .auth-box .toggle-link:hover {
             text-decoration: underline;
         }
 
-        .container {
-            display: none; /* Hide course portal initially */
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
+    <!-- Login/Signup Section -->
+    <div class="auth-container" id="authContainer">
+        <div class="auth-box" id="loginBox">
+            <h2>Login</h2>
+            <input type="email" id="loginEmail" placeholder="Email" required>
+            <input type="password" id="loginPassword" placeholder="Password" required>
+            <button onclick="login()">Login</button>
+            <p class="toggle-link" onclick="showSignup()">Don't have an account? Sign up</p>
+        </div>
 
-<div id="loginPage" class="login-container">
-    <div class="login-box">
-        <h2 id="formTitle">Login</h2>
-        <input type="email" id="email" placeholder="Email" required>
-        <input type="password" id="password" placeholder="Password" required>
-        <button onclick="handleSubmit()">Login</button>
-        <p id="toggleText">Don't have an account? <a class="toggle-link" onclick="toggleForm()">Sign up</a></p>
+        <div class="auth-box hidden" id="signupBox">
+            <h2>Sign Up</h2>
+            <input type="text" id="signupName" placeholder="Name" required>
+            <input type="email" id="signupEmail" placeholder="Email" required>
+            <input type="password" id="signupPassword" placeholder="Password" required>
+            <button onclick="signup()">Sign Up</button>
+            <p class="toggle-link" onclick="showLogin()">Already have an account? Log in</p>
+        </div>
     </div>
-</div>
 
-<div class="title-strip" style="display: none;" id="portalHeader">
-    Course Portal
-</div>
-
-<div id="courseContainer" class="container">
-    <div class="course-header">Course Catalogue</div>
-    <input type="text" class="search-bar" id="searchBar" placeholder="Search for a folder" oninput="searchFolder()" />
-    <div class="folder-container"></div>
-</div>
-
-<a href="#" class="back" style="display: none;" id="backButton" onclick="goBack()">&#8592; Back</a>
-<h2 id="folderName" style="display: none;"></h2>
-
-<div id="readmeContent" class="content-wrapper" style="display: none;">
-    <div class="sidebar">
-        <ul class="file-list" id="fileList"></ul>
+    <!-- Course Portal Section -->
+    <div class="title-strip">
+        Course Portal
     </div>
-    <div class="main-content" id="fileContent"></div>
-</div>
 
-<button class="prev-button" id="previousButton" onclick="loadPreviousFile()">Previous</button>
-<button class="next-button" id="nextButton" onclick="loadNextFile()">Next</button>
+    <div id="courseContainer" class="container">
+        <div class="course-header">Course Catalogue</div>
+        <input type="text" class="search-bar" id="searchBar" placeholder="Search for a folder" oninput="searchFolder()" />
+        <div class="folder-container"></div>
+    </div>
 
-<script>
-    let isLogin = true; // Tracks whether the current form is login or signup
+    <a href="#" class="back" style="display: none;" id="backButton" onclick="goBack()">&#8592; Back</a>
+    <h2 id="folderName" style="display: none;"></h2>
 
-    function toggleForm() {
-        isLogin = !isLogin;
-        document.getElementById("formTitle").textContent = isLogin ? "Login" : "Sign Up";
-        document.getElementById("toggleText").innerHTML = isLogin
-            ? "Don't have an account? <a class='toggle-link' onclick='toggleForm()'>Sign up</a>"
-            : "Already have an account? <a class='toggle-link' onclick='toggleForm()'>Login</a>";
-    }
+    <div id="readmeContent" class="content-wrapper" style="display: none;">
+        <div class="sidebar">
+            <ul class="file-list" id="fileList"></ul>
+        </div>
+        <div class="main-content" id="fileContent"></div>
+    </div>
 
-    function handleSubmit() {
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
+    <button class="prev-button" id="previousButton" onclick="loadPreviousFile()">Previous</button>
+    <button class="next-button" id="nextButton" onclick="loadNextFile()">Next</button>
 
-        if (!email || !password) {
-            alert("Please fill out all fields.");
-            return;
+    <script>
+        // Toggle between Login and Signup
+        function showSignup() {
+            document.getElementById('loginBox').classList.add('hidden');
+            document.getElementById('signupBox').classList.remove('hidden');
         }
 
-        if (isLogin) {
-            // Handle login logic here
-            console.log("Logged in as", email);
-        } else {
-            // Handle signup logic here
-            console.log("Signed up as", email);
+        function showLogin() {
+            document.getElementById('signupBox').classList.add('hidden');
+            document.getElementById('loginBox').classList.remove('hidden');
         }
 
-        // Simulate successful login/signup and show the course portal
-        document.getElementById("loginPage").style.display = "none";
-        document.getElementById("portalHeader").style.display = "block";
-        document.getElementById("courseContainer").style.display = "block";
-    }
-</script>
+        // Mock login/signup functions
+        function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            if (email && password) {
+                alert('Logged in successfully!');
+                document.getElementById('authContainer').style.display = 'none';
+                document.getElementById('courseContainer').style.display = 'block';
+            } else {
+                alert('Please fill in all fields.');
+            }
+        }
 
-<!-- The rest of the Course Portal script remains the same -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/default.min.css">
-<script>
+        function signup() {
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            if (name && email && password) {
+                alert('Signed up successfully!');
+                showLogin();
+            } else {
+                alert('Please fill in all fields.');
+            }
+        }
+    </script>
+
+    <!-- Pre-existing Course Portal Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/default.min.css">
+    <script>
     // Fetch and display folders logic remains the same
     const repoOwner = "aditya5573";
     const repoName = "Course-Catalogue";
@@ -173,7 +190,7 @@
         const data = await response.json();
         return data.filter(item => item.type === "dir");
     }
-
+        
         async function loadNotebookContent(file, link) {
             const response = await fetch(file.download_url);
             const notebook = await response.json(); // Parse the .ipynb JSON file
