@@ -3,6 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login/Signup Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 300px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .toggle-link {
+            text-align: center;
+            margin-top: 10px;
+            color: #007bff;
+            cursor: pointer;
+        }
+
+        .toggle-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="auth-container">
+        <h2 id="form-title">Login</h2>
+        <form id="auth-form">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="button" onclick="handleAuth()">Login</button>
+            <div class="toggle-link" onclick="toggleAuth()">Don't have an account? Signup</div>
+        </form>
+    </div>
+
+    <script>
+        let isLogin = true;
+
+        function toggleAuth() {
+            isLogin = !isLogin;
+            const formTitle = document.getElementById('form-title');
+            const authForm = document.getElementById('auth-form');
+            const toggleLink = document.querySelector('.toggle-link');
+
+            if (isLogin) {
+                formTitle.textContent = 'Login';
+                toggleLink.textContent = "Don't have an account? Signup";
+            } else {
+                formTitle.textContent = 'Signup';
+                toggleLink.textContent = "Already have an account? Login";
+            }
+        }
+
+        function handleAuth() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (!username || !password) {
+                alert('Please fill out all fields.');
+                return;
+            }
+
+            // Simulate authentication
+            if (isLogin) {
+                // Login logic
+                alert('Login successful! Redirecting to the course portal...');
+            } else {
+                // Signup logic
+                alert('Signup successful! Redirecting to the course portal...');
+            }
+
+            // Redirect to the course portal (replace with actual URL if needed)
+            window.location.href = "course-portal.html";
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Portal</title>
     <style>
         body {
