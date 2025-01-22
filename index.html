@@ -21,6 +21,467 @@
             font-weight: bold;
         }
 
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f9f9f9;
+        }
+
+        .login-box {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .login-box h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .login-box input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 10px;
+            background-color: #ab031d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .login-box button:hover {
+            background-color: #900c3f;
+        }
+
+        .toggle-link {
+            color: #ab031d;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .toggle-link:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            display: none; /* Hide course portal initially */
+        }
+    </style>
+</head>
+<body>
+
+<div id="loginPage" class="login-container">
+    <div class="login-box">
+        <h2 id="formTitle">Login</h2>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button onclick="handleSubmit()">Login</button>
+        <p id="toggleText">Don't have an account? <a class="toggle-link" onclick="toggleForm()">Sign up</a></p>
+    </div>
+</div>
+
+<div class="title-strip" style="display: none;" id="portalHeader">
+    Course Portal
+</div>
+
+<div id="courseContainer" class="container">
+    <div class="course-header">Course Catalogue</div>
+    <input type="text" class="search-bar" id="searchBar" placeholder="Search for a folder" oninput="searchFolder()" />
+    <div class="folder-container"></div>
+</div>
+
+<a href="#" class="back" style="display: none;" id="backButton" onclick="goBack()">&#8592; Back</a>
+<h2 id="folderName" style="display: none;"></h2>
+
+<div id="readmeContent" class="content-wrapper" style="display: none;">
+    <div class="sidebar">
+        <ul class="file-list" id="fileList"></ul>
+    </div>
+    <div class="main-content" id="fileContent"></div>
+</div>
+
+<button class="prev-button" id="previousButton" onclick="loadPreviousFile()">Previous</button>
+<button class="next-button" id="nextButton" onclick="loadNextFile()">Next</button>
+
+<script>
+    let isLogin = true; // Tracks whether the current form is login or signup
+
+    function toggleForm() {
+        isLogin = !isLogin;
+        document.getElementById("formTitle").textContent = isLogin ? "Login" : "Sign Up";
+        document.getElementById("toggleText").innerHTML = isLogin
+            ? "Don't have an account? <a class='toggle-link' onclick='toggleForm()'>Sign up</a>"
+            : "Already have an account? <a class='toggle-link' onclick='toggleForm()'>Login</a>";
+    }
+
+    function handleSubmit() {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        if (!email || !password) {
+            alert("Please fill out all fields.");
+            return;
+        }
+
+        if (isLogin) {
+            // Handle login logic here
+            console.log("Logged in as", email);
+        } else {
+            // Handle signup logic here
+            console.log("Signed up as", email);
+        }
+
+        // Simulate successful login/signup and show the course portal
+        document.getElementById("loginPage").style.display = "none";
+        document.getElementById("portalHeader").style.display = "block";
+        document.getElementById("courseContainer").style.display = "block";
+    }
+</script>
+
+<!-- The rest of the Course Portal script remains the same -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/default.min.css">
+<script>
+    // Fetch and display folders logic remains the same
+    const repoOwner = "aditya5573";
+    const repoName = "Course-Catalogue";
+    const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents`;
+
+    const markdownConverter = new showdown.Converter();
+    let currentFileIndex = 0;
+    let mdFiles = [];
+    let folders = [];
+
+    async function fetchFolders() {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        return data.filter(item => item.type === "dir");
+    }
+
+        async function loadNotebookContent(file, link) {
+            const response = await fetch(file.download_url);
+            const notebook = await response.json(); // Parse the .ipynb JSON file
+        
+            // Remove "active" class from all links and add to the current link
+            document.querySelectorAll(".file-list a").forEach(a => a.classList.remove("active"));
+            link.classList.add("active");
+        
+            const contentArea = document.getElementById("fileContent");
+            contentArea.innerHTML = ""; // Clear content area
+        
+            // Loop through notebook cells
+            notebook.cells.forEach(cell => {
+                if (cell.cell_type === "code") {
+                    // Create a container for the code block and button
+                    const codeContainer = document.createElement("div");
+                    codeContainer.className = "code-container";
+        
+                    // Render code block with syntax highlighting
+                    const pre = document.createElement("pre");
+                    const code = document.createElement("code");
+                    code.className = "language-python"; // Use appropriate language
+                    code.textContent = cell.source.join(''); // Combine code lines
+                    pre.appendChild(code);
+        
+                    // Add a "Copy Code" button
+                    const copyButton = document.createElement("button");
+                    copyButton.className = "copy-icon";
+                    copyButton.textContent = "Copy Code";
+        
+                    // Add functionality to the "Copy Code" button
+                    copyButton.onclick = () => {
+                        navigator.clipboard.writeText(cell.source.join('')).then(() => {
+                            copyButton.textContent = "Copied!";
+                            setTimeout(() => {
+                                copyButton.textContent = "Copy Code";
+                            }, 3000);
+                        });
+                    };
+        
+                    // Append the code block and button to the container
+                    codeContainer.appendChild(pre);
+                    codeContainer.appendChild(copyButton);
+                    contentArea.appendChild(codeContainer);
+        
+                    // Highlight the code block
+                    hljs.highlightElement(code);
+                }
+                else if (cell.cell_type === "markdown") {
+                    // Convert Markdown to HTML
+                    const htmlContent = markdownConverter.makeHtml(cell.source.join(''));
+                    const div = document.createElement("div");
+                    div.className = "markdown-content";
+                    div.innerHTML = htmlContent;
+                    contentArea.appendChild(div);
+                }
+            });
+        
+            currentFileIndex = mdFiles.indexOf(file);
+        }
+
+
+        async function loadFolderContents(folderName) {
+            const folderUrl = `${apiUrl}/${folderName}`;
+            const response = await fetch(folderUrl);
+            const files = await response.json();
+            mdFiles = files.filter(file => file.name.endsWith(".md") || file.name.endsWith(".ipynb"));
+
+
+            document.getElementById("backButton").style.display = "block";
+            //document.getElementById("nextButton").style.display = "none";
+            document.getElementById("nextButton").style.display = mdFiles.length > 1 ? "block" : "none";
+            document.getElementById("previousButton").style.display = mdFiles.length > 0 ? "block" : "none";
+            document.getElementById("folderName").style.display = "block";
+            document.getElementById("folderName").textContent = folderName;
+            document.getElementById("readmeContent").style.display = "flex";
+            document.getElementById("courseContainer").style.display = "none";
+
+            const sidebar = document.getElementById("fileList");
+            const contentArea = document.getElementById("fileContent");
+
+            sidebar.innerHTML = "";
+            contentArea.innerHTML = "";
+
+            mdFiles.forEach((file, index) => {
+                const listItem = document.createElement("li");
+                const link = document.createElement("a");
+                link.textContent = formatFileName(file.name);
+                link.href = "#";
+                link.onclick = () => {
+                    loadFileContent(file, link);
+                    return false;
+                };
+
+                // Check file type and load content accordingly
+                if (file.name.endsWith(".md")) {
+                    link.onclick = () => {
+                        loadFileContent(file, link);
+                        return false;
+                    };
+                } else if (file.name.endsWith(".ipynb")) {
+                    link.onclick = () => {
+                        loadNotebookContent(file, link);
+                        return false;
+                    };
+                }
+
+                if (index === 0) {
+                    link.classList.add("active");
+                    if (file.name.endsWith(".md")) {
+                        loadFileContent(file, link);
+                    } else if (file.name.endsWith(".ipynb")) {
+                        loadNotebookContent(file, link);
+                    }
+                }
+
+                listItem.appendChild(link);
+                sidebar.appendChild(listItem);
+            });
+
+            document.getElementById("nextButton").style.display = "block";
+        }
+
+        async function loadFileContent(file, link) {
+            const response = await fetch(file.download_url);
+            const content = await response.text();
+
+            document.querySelectorAll(".file-list a").forEach(a => a.classList.remove("active"));
+            link.classList.add("active");
+
+            const contentArea = document.getElementById("fileContent");
+            const htmlContent = markdownConverter.makeHtml(formatCodeBlocks(content));
+            contentArea.innerHTML = `<div class="markdown-content">${htmlContent}</div>`;
+            addCopyButtons();
+            document.querySelectorAll("pre code").forEach((el) => {
+                hljs.highlightElement(el);
+            });
+
+            currentFileIndex = mdFiles.indexOf(file);
+        }
+
+        function formatCodeBlocks(content) {
+            return content.replace(/```([\s\S]*?)```/g, (match, code) => {
+                return `<pre><code>${code.trim()}</code></pre>`;
+            });
+        }
+
+        function formatFileName(fileName) {
+            return fileName
+                .replace(/_/g, ' ') // Replace underscores with spaces
+                .replace(/\.md$/, ''); // Remove the .md extension
+                
+        }
+
+        function addCopyButtons() {
+        const preElements = document.querySelectorAll("pre");
+
+        preElements.forEach((pre) => {
+            // Create a button element
+            const button = document.createElement("button");
+            button.className = "copy-icon";
+            button.innerHTML = "Copy Code";
+
+            // Add click event to copy the code
+            button.onclick = () => {
+                const codeContent = pre.querySelector("code").innerText.trim();
+                navigator.clipboard.writeText(codeContent).then(() => {
+                    button.innerText = "Copied!";
+                    setTimeout(() => {
+                        button.innerText = "Copy Code";
+                    }, 3000);
+                });
+            };
+
+            // Add the button to the code block
+            pre.style.position = "relative"; // Ensure the position for button placement
+            button.style.position = "absolute";
+            button.style.top = "10px";
+            button.style.right = "10px";
+            button.style.padding = "5px 10px";
+            button.style.fontSize = "12px";
+            button.style.backgroundColor = "#ab031d";
+            button.style.color = "white";
+            button.style.border = "none";
+            button.style.borderRadius = "5px";
+            button.style.cursor = "pointer";
+
+            pre.appendChild(button);
+        });
+    }
+
+    // Call the function after content is loaded
+    document.addEventListener("DOMContentLoaded", () => {
+        addCopyButtons();
+    });
+
+        function goBack() {
+            document.getElementById("backButton").style.display = "none";
+            document.getElementById("folderName").style.display = "none";
+            document.getElementById("readmeContent").style.display = "none";
+            document.getElementById("courseContainer").style.display = "block";
+            document.getElementById("nextButton").style.display = "none";
+            document.getElementById("previousButton").style.display = "none";
+        }
+
+        function loadNextFile() {
+            if (currentFileIndex < mdFiles.length - 1) {
+                currentFileIndex++;
+                const nextFile = mdFiles[currentFileIndex];
+                const sidebarLinks = document.querySelectorAll(".file-list a");
+                sidebarLinks.forEach(link => link.classList.remove("active"));
+                const nextLink = sidebarLinks[currentFileIndex];
+                nextLink.classList.add("active");
+                //loadFileContent(nextFile, nextLink);
+                
+                if (nextFile.name.endsWith(".md")) {
+                    loadFileContent(nextFile, nextLink);
+                } else if (nextFile.name.endsWith(".ipynb")) {
+                    loadNotebookContent(nextFile, nextLink);
+                }
+            }
+        }
+
+        function loadPreviousFile() {
+            if (currentFileIndex > 0) {
+                currentFileIndex--;
+                const prevFile = mdFiles[currentFileIndex];
+                const sidebarLinks = document.querySelectorAll(".file-list a");
+                sidebarLinks.forEach(link => link.classList.remove("active"));
+                const prevLink = sidebarLinks[currentFileIndex];
+                prevLink.classList.add("active");
+        
+                if (prevFile.name.endsWith(".md")) {
+                    loadFileContent(prevFile, prevLink);
+                } else if (prevFile.name.endsWith(".ipynb")) {
+                    loadNotebookContent(prevFile, prevLink);
+                }
+            }
+        }
+
+        function searchFolder() {
+            const searchQuery = document.getElementById("searchBar").value.toLowerCase();
+            const folders = document.querySelectorAll(".folder");
+            folders.forEach(folder => {
+                const folderName = folder.querySelector("h3").textContent.toLowerCase();
+                // if (folderName.includes(searchQuery)) {
+                //     folder.style.display = "block";
+                // } else {
+                //     folder.style.display = "none";
+                // }
+                folder.style.display = folderName.includes(searchQuery) ? "block" : "none";
+            });
+        }
+
+        async function displayFolders() {
+            const container = document.querySelector(".folder-container");
+            container.innerHTML = "Loading...";
+            folders = await fetchFolders();
+            container.innerHTML = "";
+
+            folders.forEach(folder => {
+                const folderDiv = document.createElement("div");
+                folderDiv.className = "folder";
+                folderDiv.innerHTML = `
+                    <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png" alt="folder icon">
+                    <h3>${folder.name}</h3>
+                `;
+                folderDiv.onclick = () => loadFolderContents(folder.name);
+                container.appendChild(folderDiv);
+            });
+        }
+
+        displayFolders();
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Portal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .title-strip {
+            background-color: #ab031d;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            font-size: 40px;
+            font-weight: bold;
+        }
+
         .container {
             padding: 10px;
         }
@@ -587,7 +1048,7 @@
         displayFolders();
     </script>
 </body>
-</html>
+</html> -->
 
 
 
